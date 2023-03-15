@@ -17,13 +17,13 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
   String error = '';
   bool loading = false;
 
-  final emailController = TextEditingController();
+  final pseudoController = TextEditingController();
   final passwordController = TextEditingController();
   bool showSignin = true;
 
   @override
   void dispose() {
-    emailController.dispose();
+    pseudoController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -32,7 +32,7 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
     setState(() {
       _formKey.currentState!.reset();
       error = '';
-      emailController.text = '';
+      pseudoController.text = '';
       passwordController.text = '';
       showSignin = !showSignin;
     });
@@ -67,11 +67,11 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: emailController,
+                      controller: pseudoController,
                       decoration:
-                          textInputDecoration.copyWith(hintText: 'email'),
+                          textInputDecoration.copyWith(hintText: 'pseudo'),
                       validator: (value) =>
-                          value!.isEmpty ? 'Entrez un email' : null,
+                          value!.isEmpty ? 'Entrez un pseudo' : null,
                     ),
                     const SizedBox(height: 10.0),
                     TextFormField(
@@ -84,15 +84,14 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           : null,
                     ),
                     const SizedBox(height: 10.0),
-                    ElevatedButton(
-                      child: Text(
-                        showSignin ? 'Connexion' : 'Inscription',
-                        style: TextStyle(color: Colors.white),
+                    FilledButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueGrey, // Background color
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           setState(() => loading = true);
-                          var email = emailController.value.text;
+                          var pseudo = pseudoController.value.text;
                           var password = passwordController.value.text;
 
                           //ToDo call api auth
@@ -101,11 +100,15 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           if (result == null) {
                             setState(() {
                               loading = false;
-                              error = 'Veuillez entrer un email valide';
+                              error = 'Veuillez entrer un pseudo valide';
                             });
                           }
                         }
                       },
+                      child: Text(
+                        showSignin ? 'Connexion' : 'Inscription',
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Text(
