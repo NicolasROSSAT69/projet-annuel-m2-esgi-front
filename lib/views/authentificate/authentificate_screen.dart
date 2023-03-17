@@ -4,16 +4,28 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../widgets/constances.dart';
 import '../../views/widgets/loading.dart';
+import 'package:my_app/services/authentication.dart';
+import 'package:my_app/config.dart';
 
 class AuthentificateScreen extends StatefulWidget {
-  const AuthentificateScreen({Key? key}) : super(key: key);
+  final AppConfig config;
+  const AuthentificateScreen({required this.config});
 
   @override
   State<AuthentificateScreen> createState() => _AuthentificateScreenState();
 }
 
 class _AuthentificateScreenState extends State<AuthentificateScreen> {
+  late AuthenticationService _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = AuthenticationService(config: widget.config);
+  }
+
   final _formKey = GlobalKey<FormState>();
+
   String error = '';
   bool loading = false;
 
@@ -88,7 +100,7 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueGrey, // Background color
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           setState(() => loading = true);
                           var pseudo = pseudoController.value.text;
@@ -96,11 +108,14 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
 
                           //ToDo call api auth
 
-                          dynamic result = null;
+                          dynamic result = showSignin
+                              ? await _auth.signIn(pseudo, password)
+                              : await _auth.signUp(pseudo, password);
                           if (result == null) {
                             setState(() {
                               loading = false;
-                              error = 'Veuillez entrer un pseudo valide';
+                              error =
+                                  'Veuillez entrer un pseudo et un mot de passe valide';
                             });
                           }
                         }

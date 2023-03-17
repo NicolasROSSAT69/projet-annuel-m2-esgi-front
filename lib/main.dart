@@ -1,22 +1,75 @@
 import 'package:flutter/material.dart';
-import './views/authentificate/authentificate_screen.dart';
+import 'package:my_app/views/splashscreen_wrapper.dart';
+import 'package:provider/provider.dart';
+import 'package:my_app/services/authentication.dart';
+import 'models/user.dart';
+import 'config.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final config = await AppConfig.loadConfig();
+  runApp(MyApp(config: config));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AppConfig config;
 
-  // This widget is the root of your application.
+  MyApp({required this.config});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        Provider<AppConfig>.value(value: config),
+        ChangeNotifierProvider<AuthenticationService>(
+          create: (_) => AuthenticationService(config: config),
+        ),
+        // StreamProvider<AppUser?>(
+        //   create: (context) => context.read<AuthenticationService>().user,
+        //   initialData: null,
+        // ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        onGenerateRoute: (settings) =>
+            RouteGenerator.generateRoute(settings, config: config),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // home: SplashScreenWrapper(config: config),
+        home: StreamProvider<AppUser?>(
+          create: (context) => context.read<AuthenticationService>().user,
+          initialData: null,
+          catchError: (context, error) {
+            print("Erreur dans StreamProvider: $error");
+            return null;
+          },
+          child: SplashScreenWrapper(config: config),
+        ),
       ),
-      home: const AuthentificateScreen(),
     );
+  }
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings,
+      {required AppConfig config}) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(
+            builder: (context) => SplashScreenWrapper(config: config));
+      default:
+        return pageNotFound();
+    }
+  }
+
+  static MaterialPageRoute pageNotFound() {
+    return MaterialPageRoute(
+        builder: (context) => Scaffold(
+            appBar: AppBar(title: const Text("Error"), centerTitle: true),
+            body: const Center(
+              child: Text("Page not found"),
+            )));
   }
 }
