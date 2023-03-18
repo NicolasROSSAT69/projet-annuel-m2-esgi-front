@@ -8,7 +8,7 @@ import 'package:my_app/services/authentication.dart';
 
 class SplashScreenWrapper extends StatelessWidget {
   final AppConfig config;
-  SplashScreenWrapper({required this.config});
+  const SplashScreenWrapper({required this.config});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class SplashScreenWrapper extends StatelessWidget {
         }
         if (snapshot.hasData && snapshot.data != null) {
           //print('SplashScreenWrapper: user changed: ${snapshot.data}');
-          return const HomeScreen();
+          return HomeScreen(config: config);
         } else {
           return AuthentificateScreen(config: config);
         }
