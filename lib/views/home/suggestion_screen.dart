@@ -20,14 +20,6 @@ class SuggestionScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: const Text('Mes suggestions'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              authService.signOut();
-            },
-          ),
-        ],
       ),
       body: Center(
         child: currentUser != null

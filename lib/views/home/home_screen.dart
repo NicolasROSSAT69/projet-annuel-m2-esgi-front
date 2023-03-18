@@ -30,11 +30,12 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blueGrey),
-              child: Text(
-                'Navigation',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.blueGrey),
+              child: Image.asset(
+                'assets/img/MelodySphereLogo.png',
+                width: 100,
+                height: 100,
               ),
             ),
             ListTile(
@@ -46,14 +47,14 @@ class HomeScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.music_note),
-              title: const Text('Playlists'),
+              title: const Text('Ma playlists'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/playlist');
               },
             ),
             ListTile(
-              leading: const Icon(Icons.music_note),
+              leading: const Icon(Icons.tips_and_updates),
               title: const Text('Mes suggestions'),
               onTap: () {
                 Navigator.pop(context);
