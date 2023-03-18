@@ -5,7 +5,7 @@ import 'package:my_app/services/authentication.dart';
 import 'models/user.dart';
 import 'config.dart';
 import 'package:my_app/views/home/playlist_screen.dart';
-import 'package:my_app/views/authentificate/authentificate_screen.dart';
+import 'package:my_app/views/home/suggestion_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +61,20 @@ class RouteGenerator {
                         listen: false);
                     if (authService.currentUser != null) {
                       return PlaylistScreen(config: config);
+                    } else {
+                      return SplashScreenWrapper(config: config);
+                    }
+                  },
+                ));
+      case '/suggestion':
+        return MaterialPageRoute(
+            builder: (context) => Builder(
+                  builder: (BuildContext innerContext) {
+                    final authService = Provider.of<AuthenticationService>(
+                        innerContext,
+                        listen: false);
+                    if (authService.currentUser != null) {
+                      return SuggestionScreen(config: config);
                     } else {
                       return SplashScreenWrapper(config: config);
                     }

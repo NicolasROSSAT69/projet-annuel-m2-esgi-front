@@ -4,9 +4,9 @@ import 'package:my_app/services/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/config.dart';
 
-class PlaylistScreen extends StatelessWidget {
+class SuggestionScreen extends StatelessWidget {
   final AppConfig config;
-  PlaylistScreen({required this.config});
+  SuggestionScreen({required this.config});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PlaylistScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Ma playlist'),
+        title: const Text('Mes suggestions'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -31,7 +31,7 @@ class PlaylistScreen extends StatelessWidget {
       ),
       body: Center(
         child: currentUser != null
-            ? Text('Playlist de ${currentUser.username}')
+            ? Text('Suggestions de ${currentUser.username}')
             : const Text('Aucun utilisateur connecté'),
       ),
     );

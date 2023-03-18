@@ -52,6 +52,14 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/playlist');
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.music_note),
+              title: const Text('Mes suggestions'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/suggestion');
+              },
+            ),
             // Ajoutez d'autres éléments de liste ici pour les autres pages
           ],
         ),
