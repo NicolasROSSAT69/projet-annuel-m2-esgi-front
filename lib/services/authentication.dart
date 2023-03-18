@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class AuthenticationService extends ChangeNotifier {
   final AppConfig config;
+  AppUser? currentUser;
   AuthenticationService({required this.config});
 
   final StreamController<AppUser?> _userController =
@@ -45,6 +46,8 @@ class AuthenticationService extends ChangeNotifier {
 
       // Diffuser l'objet AppUser sur le stream
       _userController.add(appUser);
+      // Stocke l'utilisateur courant dans currentUser
+      currentUser = appUser;
       //print('signIn success: $appUser');
       notifyListeners();
 
@@ -59,6 +62,8 @@ class AuthenticationService extends ChangeNotifier {
   Future signOut() async {
     // Diffuser null sur le stream lorsque l'utilisateur se déconnecte
     _userController.add(null);
+    // Réinitialiser currentUser lors de la déconnexion
+    currentUser = null;
     print("signOut: User disconnected");
     notifyListeners();
   }

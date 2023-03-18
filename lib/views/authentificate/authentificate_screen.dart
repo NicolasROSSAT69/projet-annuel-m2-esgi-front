@@ -81,7 +81,7 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset('assets/img/MelodySphereLogo.png'),
-                          const SizedBox(height: 10.0),
+                          const SizedBox(height: 30.0),
                           TextFormField(
                             controller: pseudoController,
                             decoration: textInputDecoration.copyWith(
