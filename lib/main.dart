@@ -38,15 +38,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: SplashScreenWrapper(config: config),
-        // home: StreamProvider<AppUser?>(
-        //   create: (context) => context.read<AuthenticationService>().user,
-        //   initialData: null,
-        //   catchError: (context, error) {
-        //     print("Erreur dans StreamProvider: $error");
-        //     return null;
-        //   },
-        //   child: SplashScreenWrapper(config: config),
-        // ),
       ),
     );
   }
@@ -67,7 +58,10 @@ class RouteGenerator {
   static MaterialPageRoute pageNotFound() {
     return MaterialPageRoute(
         builder: (context) => Scaffold(
-            appBar: AppBar(title: const Text("Error"), centerTitle: true),
+            appBar: AppBar(
+                title: const Text("Error"),
+                centerTitle: true,
+                backgroundColor: Colors.blueGrey),
             body: const Center(
               child: Text("Page not found"),
             )));
