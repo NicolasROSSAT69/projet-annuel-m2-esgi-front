@@ -6,10 +6,26 @@ import 'package:my_app/views/home/playlist_screen.dart';
 import 'package:my_app/models/music.dart';
 import 'package:my_app/services/music/music.dart';
 import 'package:my_app/config.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class HomeScreen extends StatelessWidget {
   final AppConfig config;
   HomeScreen({required this.config});
+
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+  void togglePlayback(Music music) async {
+    if (audioPlayer.state == PlayerState.playing) {
+      await audioPlayer.pause();
+    } else {
+      await audioPlayer.play(UrlSource(music.preview));
+    }
+  }
+
+  //Pour gérer l'état de lecture de la musique
+  ValueNotifier<bool> isPlaying = ValueNotifier<bool>(false);
+
+  ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +120,35 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.play_arrow),
-                                      onPressed: () {
-                                        // Ajoutez votre logique pour le bouton de lecture ici
+                                      icon: ValueListenableBuilder<int>(
+                                        valueListenable: playingIndex,
+                                        builder:
+                                            (context, currentIndex, child) {
+                                          return Icon(currentIndex == index &&
+                                                  audioPlayer.state ==
+                                                      PlayerState.playing
+                                              ? Icons.pause
+                                              : Icons.play_arrow);
+                                        },
+                                      ),
+                                      onPressed: () async {
+                                        if (audioPlayer.state ==
+                                                PlayerState.playing &&
+                                            playingIndex.value == index) {
+                                          await audioPlayer.pause();
+                                          playingIndex.value = -1;
+                                        } else {
+                                          await audioPlayer
+                                              .play(UrlSource(music.preview));
+                                          await audioPlayer.resume();
+                                          playingIndex.value = index;
+                                        }
                                       },
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.add),
                                       onPressed: () {
-                                        // Ajoutez votre logique pour le bouton d'ajout ici
+                                        // Ajouter votre logique pour le bouton d'ajout ici
                                       },
                                     ),
                                   ],
