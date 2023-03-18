@@ -22,7 +22,8 @@ class HomeScreen extends StatelessWidget {
     List<Music> searchResults(List<Music> musicList, String query) {
       return musicList
           .where((music) =>
-              music.title.toLowerCase().contains(query.toLowerCase()))
+              music.title.toLowerCase().contains(query.toLowerCase()) ||
+              music.artiste.toLowerCase().contains(query.toLowerCase()))
           .toList();
     }
 
@@ -82,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                             Music music = filteredMusicList[index];
                             return ListTile(
                               title: Text(music.title),
-                              subtitle: Text(music.id.toString()),
+                              subtitle: Text(music.artiste),
                             );
                           },
                         ),
