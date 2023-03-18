@@ -71,71 +71,84 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
             body: Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: pseudoController,
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'pseudo'),
-                      validator: (value) =>
-                          value!.isEmpty ? 'Entrez un pseudo' : null,
-                    ),
-                    if (!showSignin) SizedBox(height: 10.0),
-                    if (!showSignin)
-                      TextFormField(
-                        controller: emailController,
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Email'),
-                        validator: (value) =>
-                            value!.isEmpty ? 'Entrez un email' : null,
-                      ),
-                    const SizedBox(height: 10.0),
-                    TextFormField(
-                      controller: passwordController,
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'mot de passe'),
-                      obscureText: true,
-                      validator: (value) => value!.length < 6
-                          ? 'Entrez un mot de passe de plus de 6 caractères'
-                          : null,
-                    ),
-                    const SizedBox(height: 10.0),
-                    FilledButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey, // Background color
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          var pseudo = pseudoController.value.text;
-                          var password = passwordController.value.text;
-                          var email = emailController.value.text;
+              child: Center(
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/img/MelodySphereLogo.png'),
+                          const SizedBox(height: 10.0),
+                          TextFormField(
+                            controller: pseudoController,
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'pseudo'),
+                            validator: (value) =>
+                                value!.isEmpty ? 'Entrez un pseudo' : null,
+                          ),
+                          if (!showSignin) const SizedBox(height: 10.0),
+                          if (!showSignin)
+                            TextFormField(
+                              controller: emailController,
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Email'),
+                              validator: (value) =>
+                                  value!.isEmpty ? 'Entrez un email' : null,
+                            ),
+                          const SizedBox(height: 10.0),
+                          TextFormField(
+                            controller: passwordController,
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'mot de passe'),
+                            obscureText: true,
+                            validator: (value) => value!.length < 6
+                                ? 'Entrez un mot de passe de plus de 6 caractères'
+                                : null,
+                          ),
+                          const SizedBox(height: 10.0),
+                          FilledButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.blueGrey, // Background color
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => loading = true);
+                                var pseudo = pseudoController.value.text;
+                                var password = passwordController.value.text;
+                                var email = emailController.value.text;
 
-                          dynamic result = showSignin
-                              ? await _auth.signIn(pseudo, password)
-                              : await _auth.signUp(pseudo, email, password);
-                          if (result == null) {
-                            setState(() {
-                              loading = false;
-                              error =
-                                  'Veuillez entrer un pseudo et un mot de passe valide';
-                            });
-                          }
-                        }
-                      },
-                      child: Text(
-                        showSignin ? 'Connexion' : 'Inscription',
-                        style: const TextStyle(color: Colors.white),
+                                dynamic result = showSignin
+                                    ? await _auth.signIn(pseudo, password)
+                                    : await _auth.signUp(
+                                        pseudo, email, password);
+                                if (result == null) {
+                                  setState(() {
+                                    loading = false;
+                                    error =
+                                        'Veuillez entrer un pseudo et un mot de passe valide';
+                                  });
+                                }
+                              }
+                            },
+                            child: Text(
+                              showSignin ? 'Connexion' : 'Inscription',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Text(
+                            error,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 14.0),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      error,
-                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
