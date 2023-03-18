@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
               future: musicService.getAllMusic(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text("Erreur : ${snapshot.error}");
                 } else {
@@ -81,9 +81,43 @@ class HomeScreen extends StatelessWidget {
                           itemCount: filteredMusicList.length,
                           itemBuilder: (context, index) {
                             Music music = filteredMusicList[index];
-                            return ListTile(
-                              title: Text(music.title),
-                              subtitle: Text(music.artiste),
+                            return Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(music.title,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium),
+                                          Text(music.artiste,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.play_arrow),
+                                      onPressed: () {
+                                        // Ajoutez votre logique pour le bouton de lecture ici
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        // Ajoutez votre logique pour le bouton d'ajout ici
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           },
                         ),
