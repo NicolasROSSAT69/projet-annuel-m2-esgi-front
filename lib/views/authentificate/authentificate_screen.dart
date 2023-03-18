@@ -23,12 +23,14 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
   bool loading = false;
 
   final pseudoController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool showSignin = true;
 
   @override
   void dispose() {
     pseudoController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -80,6 +82,15 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                       validator: (value) =>
                           value!.isEmpty ? 'Entrez un pseudo' : null,
                     ),
+                    if (!showSignin) SizedBox(height: 10.0),
+                    if (!showSignin)
+                      TextFormField(
+                        controller: emailController,
+                        decoration:
+                            textInputDecoration.copyWith(hintText: 'Email'),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Entrez un email' : null,
+                      ),
                     const SizedBox(height: 10.0),
                     TextFormField(
                       controller: passwordController,
@@ -100,12 +111,11 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           setState(() => loading = true);
                           var pseudo = pseudoController.value.text;
                           var password = passwordController.value.text;
-
-                          //ToDo call api auth
+                          var email = emailController.value.text;
 
                           dynamic result = showSignin
                               ? await _auth.signIn(pseudo, password)
-                              : await _auth.signUp(pseudo, password);
+                              : await _auth.signUp(pseudo, email, password);
                           if (result == null) {
                             setState(() {
                               loading = false;

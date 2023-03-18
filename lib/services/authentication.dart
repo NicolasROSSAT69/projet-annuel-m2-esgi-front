@@ -15,8 +15,19 @@ class AuthenticationService extends ChangeNotifier {
     return _userController.stream;
   }
 
-  Future signUp(String pseudo, String password) async {
+  Future signUp(String pseudo, String email, String password) async {
     print("test signUp ok");
+    final apiService = ApiService('${config.apiUrl}/auth/signup');
+    final data = {"username": pseudo, "email": email, "password": password};
+    try {
+      final response = await apiService.postData(data);
+      // appel la méthode signIn pour connecter l'utilisateur automatiquement après l'inscription
+      return signIn(pseudo, password);
+    } catch (e) {
+      print('Erreur lors de l\'envoi des données : $e');
+      // Diffuser 'null' sur le stream en cas d'échec de la connexion
+      _userController.add(null);
+    }
   }
 
   Future signIn(String pseudo, String password) async {
