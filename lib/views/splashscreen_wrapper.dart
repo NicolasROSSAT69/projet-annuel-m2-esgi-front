@@ -18,12 +18,12 @@ class SplashScreenWrapper extends StatelessWidget {
     return StreamBuilder<AppUser?>(
       stream: authService.user,
       builder: (context, snapshot) {
-        print('SplashScreenWrapper build called');
+        //print('SplashScreenWrapper build called ${authService.user}');
         if (snapshot.hasError) {
           print('SplashScreenWrapper: error: ${snapshot.error}');
         }
         if (snapshot.hasData && snapshot.data != null) {
-          print('SplashScreenWrapper: user changed: ${snapshot.data}');
+          //print('SplashScreenWrapper: user changed: ${snapshot.data}');
           return const HomeScreen();
         } else {
           return AuthentificateScreen(config: config);

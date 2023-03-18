@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AuthenticationService>(
           create: (_) => AuthenticationService(config: config),
         ),
-        // StreamProvider<AppUser?>(
-        //   create: (context) => context.read<AuthenticationService>().user,
-        //   initialData: null,
-        // ),
+        StreamProvider<AppUser?>(
+          create: (context) => context.read<AuthenticationService>().user,
+          initialData: null,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -37,16 +37,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        // home: SplashScreenWrapper(config: config),
-        home: StreamProvider<AppUser?>(
-          create: (context) => context.read<AuthenticationService>().user,
-          initialData: null,
-          catchError: (context, error) {
-            print("Erreur dans StreamProvider: $error");
-            return null;
-          },
-          child: SplashScreenWrapper(config: config),
-        ),
+        home: SplashScreenWrapper(config: config),
+        // home: StreamProvider<AppUser?>(
+        //   create: (context) => context.read<AuthenticationService>().user,
+        //   initialData: null,
+        //   catchError: (context, error) {
+        //     print("Erreur dans StreamProvider: $error");
+        //     return null;
+        //   },
+        //   child: SplashScreenWrapper(config: config),
+        // ),
       ),
     );
   }

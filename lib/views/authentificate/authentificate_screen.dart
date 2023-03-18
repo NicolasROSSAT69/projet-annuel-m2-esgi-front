@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import '../widgets/constances.dart';
-import '../../views/widgets/loading.dart';
+import 'package:my_app/views/widgets/constances.dart';
+import 'package:my_app/views/widgets/loading.dart';
 import 'package:my_app/services/authentication.dart';
 import 'package:my_app/config.dart';
+import 'package:provider/provider.dart';
 
 class AuthentificateScreen extends StatefulWidget {
   final AppConfig config;
@@ -16,14 +17,6 @@ class AuthentificateScreen extends StatefulWidget {
 }
 
 class _AuthentificateScreenState extends State<AuthentificateScreen> {
-  late AuthenticationService _auth;
-
-  @override
-  void initState() {
-    super.initState();
-    _auth = AuthenticationService(config: widget.config);
-  }
-
   final _formKey = GlobalKey<FormState>();
 
   String error = '';
@@ -52,6 +45,8 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<AuthenticationService>(context);
+
     return loading
         ? const Loading()
         : Scaffold(

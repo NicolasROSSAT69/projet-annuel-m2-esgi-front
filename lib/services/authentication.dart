@@ -2,9 +2,7 @@ import 'package:my_app/models/user.dart';
 import 'package:my_app/services/api/api.dart';
 import 'package:my_app/config.dart';
 import 'dart:async';
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 
 class AuthenticationService extends ChangeNotifier {
   final AppConfig config;
@@ -22,7 +20,7 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future signIn(String pseudo, String password) async {
-    print('signIn called with pseudo: $pseudo, password: $password');
+    //print('signIn called with pseudo: $pseudo, password: $password');
     final apiService = ApiService('${config.apiUrl}/auth/signin');
 
     // Créer des données JSON pour envoyer à l'API
@@ -36,10 +34,8 @@ class AuthenticationService extends ChangeNotifier {
 
       // Diffuser l'objet AppUser sur le stream
       _userController.add(appUser);
-      print('signIn success: $appUser');
+      //print('signIn success: $appUser');
       notifyListeners();
-      // print(appUser);
-      // print(response);
 
       return appUser;
     } catch (e) {
