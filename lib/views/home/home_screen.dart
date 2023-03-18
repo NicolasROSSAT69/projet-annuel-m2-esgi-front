@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/models/user.dart';
 import 'package:my_app/services/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:my_app/views/home/playlist_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,8 +11,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService =
         Provider.of<AuthenticationService>(context, listen: false);
-
-    // Récupérer l'utilisateur courant
     AppUser? currentUser = authService.currentUser;
 
     return Scaffold(
@@ -26,6 +25,36 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blueGrey),
+              child: Text(
+                'Navigation',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Accueil'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.music_note),
+              title: const Text('Playlists'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/playlist');
+              },
+            ),
+            // Ajoutez d'autres éléments de liste ici pour les autres pages
+          ],
+        ),
       ),
       body: Center(
         child: currentUser != null
