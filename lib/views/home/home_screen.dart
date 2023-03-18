@@ -7,6 +7,7 @@ import 'package:my_app/models/music.dart';
 import 'package:my_app/services/music/music.dart';
 import 'package:my_app/config.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatelessWidget {
   final AppConfig config;
@@ -58,6 +59,45 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.blueGrey),
+              child: Image.asset(
+                'assets/img/MelodySphereLogo.png',
+                width: 100,
+                height: 100,
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Accueil'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.music_note),
+              title: const Text('Ma playlists'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/playlist');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.tips_and_updates),
+              title: const Text('Mes suggestions'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/suggestion');
+              },
+            ),
+            // Ajoutez d'autres éléments de liste ici pour les autres pages
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -103,6 +143,21 @@ class HomeScreen extends StatelessWidget {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    // Ajouter ce morceau de code pour afficher l'image
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: CachedNetworkImage(
+                                        imageUrl: music.cover_small,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
