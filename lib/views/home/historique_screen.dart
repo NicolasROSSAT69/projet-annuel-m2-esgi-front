@@ -50,48 +50,55 @@ class HistoriqueScreen extends StatelessWidget {
                     itemCount: musicIds.length,
                     itemBuilder: (context, index) {
                       String musicId = musicIds[index].toString();
-                      return FutureBuilder(
-                        future: musicService.getMusicById(musicId),
-                        builder: (context, AsyncSnapshot<Music> musicSnapshot) {
-                          if (musicSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (musicSnapshot.hasError) {
-                            return Text('Erreur : ${musicSnapshot.error}');
-                          } else {
-                            Music music = musicSnapshot.data!;
-                            return ListTile(
-                              leading: Image.network(music.cover_small),
-                              title: Text(music.title),
-                              subtitle: Text(music.artiste),
-                              trailing: IconButton(
-                                icon: ValueListenableBuilder<int>(
-                                  valueListenable: playingIndex,
-                                  builder: (context, currentIndex, child) {
-                                    return Icon(currentIndex == index &&
-                                            audioPlayer.state ==
-                                                PlayerState.playing
-                                        ? Icons.pause
-                                        : Icons.play_arrow);
-                                  },
+                      return Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: FutureBuilder(
+                          future: musicService.getMusicById(musicId),
+                          builder:
+                              (context, AsyncSnapshot<Music> musicSnapshot) {
+                            if (musicSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (musicSnapshot.hasError) {
+                              return Text('Erreur : ${musicSnapshot.error}');
+                            } else {
+                              Music music = musicSnapshot.data!;
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  leading: Image.network(music.cover_small),
+                                  title: Text(music.title),
+                                  subtitle: Text(music.artiste),
+                                  trailing: IconButton(
+                                    icon: ValueListenableBuilder<int>(
+                                      valueListenable: playingIndex,
+                                      builder: (context, currentIndex, child) {
+                                        return Icon(currentIndex == index &&
+                                                audioPlayer.state ==
+                                                    PlayerState.playing
+                                            ? Icons.pause
+                                            : Icons.play_arrow);
+                                      },
+                                    ),
+                                    onPressed: () async {
+                                      if (audioPlayer.state ==
+                                              PlayerState.playing &&
+                                          playingIndex.value == index) {
+                                        await audioPlayer.pause();
+                                        playingIndex.value = -1;
+                                      } else {
+                                        await audioPlayer
+                                            .play(UrlSource(music.preview));
+                                        await audioPlayer.resume();
+                                        playingIndex.value = index;
+                                      }
+                                    },
+                                  ),
                                 ),
-                                onPressed: () async {
-                                  if (audioPlayer.state ==
-                                          PlayerState.playing &&
-                                      playingIndex.value == index) {
-                                    await audioPlayer.pause();
-                                    playingIndex.value = -1;
-                                  } else {
-                                    await audioPlayer
-                                        .play(UrlSource(music.preview));
-                                    await audioPlayer.resume();
-                                    playingIndex.value = index;
-                                  }
-                                },
-                              ),
-                            );
-                          }
-                        },
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   );
