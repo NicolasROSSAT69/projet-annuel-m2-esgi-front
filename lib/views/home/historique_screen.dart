@@ -43,6 +43,9 @@ class HistoriqueScreen extends StatelessWidget {
                   return Text('Erreur : ${snapshot.error}');
                 } else {
                   List<int> musicIds = snapshot.data!;
+                  Set<int> uniqueMusicIds =
+                      musicIds.toSet(); // Conversion en Set
+                  musicIds = uniqueMusicIds.toList(); // Reconversion en List
                   return ListView.builder(
                     itemCount: musicIds.length,
                     itemBuilder: (context, index) {
@@ -79,10 +82,6 @@ class HistoriqueScreen extends StatelessWidget {
                                     await audioPlayer.pause();
                                     playingIndex.value = -1;
                                   } else {
-                                    //Enregistrement de la musique
-                                    //écouté pour faire l'historique d'écoute de l'utilisateur
-                                    musicService.postAddEcoute(
-                                        currentUser, music);
                                     await audioPlayer
                                         .play(UrlSource(music.preview));
                                     await audioPlayer.resume();
