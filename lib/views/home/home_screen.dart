@@ -9,24 +9,40 @@ import 'package:my_app/config.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final AppConfig config;
   HomeScreen({required this.config});
 
-  final AudioPlayer audioPlayer = AudioPlayer();
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
 
-  void togglePlayback(Music music) async {
-    if (audioPlayer.state == PlayerState.playing) {
-      await audioPlayer.pause();
-    } else {
-      await audioPlayer.play(UrlSource(music.preview));
-    }
-  }
+class _HomeScreenState extends State<HomeScreen> {
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   //Pour gérer l'état de lecture de la musique
   ValueNotifier<bool> isPlaying = ValueNotifier<bool>(false);
 
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      //if (state == PlayerState.stopped) {
+      if (state == PlayerState.completed) {
+        setState(() {
+          playingIndex.value = -1;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +61,7 @@ class HomeScreen extends StatelessWidget {
           .toList();
     }
 
-    final musicService = MusicService(config: config);
+    final musicService = MusicService(config: widget.config);
 
     return Scaffold(
       appBar: AppBar(
