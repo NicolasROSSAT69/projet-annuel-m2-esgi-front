@@ -23,15 +23,12 @@ class MusicService {
   }
 
   Future postAddEcoute(AppUser currentUser, Music music) async {
-    print("Musique : ${music.title} User : ${currentUser.username}");
-    print("Musique id : ${music.id} User id: ${currentUser.id}");
     final apiService = ApiService('${config.apiUrl}/musique/ecoute/add');
 
     final data = {"musiqueId": music.id, "userId": currentUser.id};
 
     try {
       final response = await apiService.postData(data);
-      print("Reponse api : ${response}");
     } catch (e) {
       print('Erreur lors de l\'envoi des données : $e');
       throw e;
