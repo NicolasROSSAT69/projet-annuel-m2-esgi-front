@@ -40,7 +40,8 @@ class HomeScreen extends StatelessWidget {
       return musicList
           .where((music) =>
               music.title.toLowerCase().contains(query.toLowerCase()) ||
-              music.artiste.toLowerCase().contains(query.toLowerCase()))
+              music.artiste.toLowerCase().contains(query.toLowerCase()) ||
+              music.genreMusical.toLowerCase().contains(query.toLowerCase()))
           .toList();
     }
 
@@ -176,6 +177,10 @@ class HomeScreen extends StatelessWidget {
                                                   .textTheme
                                                   .titleMedium),
                                           Text(music.artiste,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall),
+                                          Text(music.genreMusical,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleSmall),
