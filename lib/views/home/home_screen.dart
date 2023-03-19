@@ -119,6 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamed(context, '/historique');
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('Mentions légales'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/mentionslegales');
+              },
+            ),
             // Ajoutez d'autres éléments de liste ici pour les autres pages
           ],
         ),
