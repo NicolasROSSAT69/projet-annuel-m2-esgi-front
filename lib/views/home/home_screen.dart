@@ -128,17 +128,38 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Rechercher',
-                    prefixIcon: Icon(Icons.search),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Rechercher',
+                      prefixIcon: const Icon(Icons.search),
+                      fillColor: Colors
+                          .white, // Couleur de fond de la barre de recherche
+                      filled: true,
+                      labelStyle: const TextStyle(
+                          color:
+                              Colors.blueGrey), // Couleur du texte "Rechercher"
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Colors
+                                .blueGrey), // Couleur de la bordure lorsqu'elle est concentrée
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Colors
+                                .grey), // Couleur de la bordure lorsqu'elle est activée
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      searchQuery.value = value;
+                    },
                   ),
-                  onChanged: (value) {
-                    searchQuery.value = value;
-                  },
                 ),
               ),
             ),
