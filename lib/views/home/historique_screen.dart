@@ -7,16 +7,40 @@ import 'package:my_app/services/music/music.dart';
 import 'package:my_app/models/music.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class HistoriqueScreen extends StatelessWidget {
+class HistoriqueScreen extends StatefulWidget {
   final AppConfig config;
   HistoriqueScreen({required this.config});
 
+  @override
+  _HistoriqueScreen createState() => _HistoriqueScreen();
+}
+
+class _HistoriqueScreen extends State<HistoriqueScreen> {
   final AudioPlayer audioPlayer = AudioPlayer();
 
   //Pour gérer l'état de lecture de la musique
   ValueNotifier<bool> isPlaying = ValueNotifier<bool>(false);
 
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      //if (state == PlayerState.stopped) {
+      if (state == PlayerState.completed) {
+        setState(() {
+          playingIndex.value = -1;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +50,7 @@ class HistoriqueScreen extends StatelessWidget {
     // Récupérer l'utilisateur courant
     AppUser? currentUser = authService.currentUser;
 
-    final musicService = MusicService(config: config);
+    final musicService = MusicService(config: widget.config);
 
     return Scaffold(
       appBar: AppBar(
