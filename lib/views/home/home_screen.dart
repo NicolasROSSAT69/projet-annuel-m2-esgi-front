@@ -94,6 +94,14 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/suggestion');
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('Mon historique'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/historique');
+              },
+            ),
             // Ajoutez d'autres éléments de liste ici pour les autres pages
           ],
         ),
