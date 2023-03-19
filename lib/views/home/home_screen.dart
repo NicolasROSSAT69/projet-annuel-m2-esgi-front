@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.history),
+              leading: const Icon(Icons.policy),
               title: const Text('Mentions légales'),
               onTap: () {
                 Navigator.pop(context);
