@@ -193,6 +193,10 @@ class HomeScreen extends StatelessWidget {
                                           await audioPlayer.pause();
                                           playingIndex.value = -1;
                                         } else {
+                                          //Enregistrement de la musique
+                                          //écouté pour faire l'historique d'écoute de l'utilisateur
+                                          musicService.postAddEcoute(
+                                              currentUser!, music);
                                           await audioPlayer
                                               .play(UrlSource(music.preview));
                                           await audioPlayer.resume();
