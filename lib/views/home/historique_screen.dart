@@ -66,7 +66,7 @@ class HistoriqueScreen extends StatelessWidget {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  leading: Image.network(music.cover_small),
+                                  leading: Image.network(music.coverSmall),
                                   title: Text(music.title),
                                   subtitle: Text(music.artiste),
                                   trailing: IconButton(

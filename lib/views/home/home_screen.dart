@@ -155,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: CachedNetworkImage(
-                                        imageUrl: music.cover_small,
+                                        imageUrl: music.coverSmall,
                                         width: 60,
                                         height: 60,
                                         fit: BoxFit.cover,
