@@ -50,6 +50,21 @@ class MusicService {
     }
   }
 
+  Future<List<int>> getUserSuggestion(AppUser currentUser) async {
+    final apiService = ApiService('${config.apiUrl}/musique/suggestion/all');
+
+    Map<String, dynamic> data = {"userId": currentUser.id};
+
+    try {
+      final response = await apiService.fetchDataWithParams(data);
+      List<int> listeningHistory = response['resultat'].cast<int>();
+      return listeningHistory;
+    } catch (e) {
+      print('Erreur lors de l\'envoi des données : $e');
+      throw e;
+    }
+  }
+
   Future<Music> getMusicById(String musicId) async {
     final apiService = ApiService('${config.apiUrl}/musique/byid');
 
