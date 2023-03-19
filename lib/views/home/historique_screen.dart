@@ -12,10 +12,10 @@ class HistoriqueScreen extends StatefulWidget {
   HistoriqueScreen({required this.config});
 
   @override
-  _HistoriqueScreen createState() => _HistoriqueScreen();
+  _HistoriqueScreenState createState() => _HistoriqueScreenState();
 }
 
-class _HistoriqueScreen extends State<HistoriqueScreen> {
+class _HistoriqueScreenState extends State<HistoriqueScreen> {
   final AudioPlayer audioPlayer = AudioPlayer();
 
   //Pour gérer l'état de lecture de la musique
