@@ -25,6 +25,8 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
   final pseudoController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
   bool showSignin = true;
 
   @override
@@ -32,6 +34,7 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
     pseudoController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -85,7 +88,7 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           TextFormField(
                             controller: pseudoController,
                             decoration: textInputDecoration.copyWith(
-                                hintText: 'pseudo'),
+                                hintText: 'Pseudo'),
                             validator: (value) =>
                                 value!.isEmpty ? 'Entrez un pseudo' : null,
                           ),
@@ -102,12 +105,28 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           TextFormField(
                             controller: passwordController,
                             decoration: textInputDecoration.copyWith(
-                                hintText: 'mot de passe'),
+                                hintText: 'Mot de passe'),
                             obscureText: true,
                             validator: (value) => value!.length < 6
                                 ? 'Entrez un mot de passe de plus de 6 caractères'
                                 : null,
                           ),
+                          if (!showSignin) const SizedBox(height: 10.0),
+                          if (!showSignin)
+                            TextFormField(
+                              controller: confirmPasswordController,
+                              decoration: textInputDecoration.copyWith(
+                                  hintText: 'Confirmer le mot de passe'),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Confirmez votre mot de passe';
+                                } else if (value != passwordController.text) {
+                                  return 'Les mots de passe ne correspondent pas';
+                                }
+                                return null;
+                              },
+                            ),
                           const SizedBox(height: 10.0),
                           FilledButton(
                             style: ElevatedButton.styleFrom(
