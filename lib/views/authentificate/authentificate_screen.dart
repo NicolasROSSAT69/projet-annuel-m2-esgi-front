@@ -59,6 +59,13 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
             appBar: AppBar(
               backgroundColor: Colors.blueGrey,
               elevation: 0.0,
+              leading: IconButton(
+                icon: const Icon(Icons.info_outline, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/mentionslegales');
+                },
+              ),
               title: Text(showSignin ? 'Connexion' : 'Inscription'),
               actions: <Widget>[
                 TextButton.icon(

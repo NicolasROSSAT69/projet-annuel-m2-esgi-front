@@ -100,14 +100,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => Builder(
                   builder: (BuildContext innerContext) {
-                    final authService = Provider.of<AuthenticationService>(
-                        innerContext,
-                        listen: false);
-                    if (authService.currentUser != null) {
-                      return MentionsLegalescreen(config: config);
-                    } else {
-                      return SplashScreenWrapper(config: config);
-                    }
+                    return MentionsLegalescreen(config: config);
                   },
                 ));
       default:
