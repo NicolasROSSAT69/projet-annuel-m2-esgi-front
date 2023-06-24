@@ -23,4 +23,25 @@ class Music {
         coverSmall: json['album']['cover_small'],
         genreMusical: json['genre_musical']);
   }
+
+  factory Music.fromJsonForPlaylist(Map<String, dynamic> json) {
+    return Music(
+        id: json['id'],
+        title: json['title'],
+        artiste: json['artiste'],
+        preview: json['preview'],
+        coverSmall: json['coverSmall'],
+        genreMusical: json['genreMusical']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'artiste': artiste,
+      'preview': preview,
+      'coverSmall': coverSmall,
+      'genreMusical': genreMusical,
+    };
+  }
 }

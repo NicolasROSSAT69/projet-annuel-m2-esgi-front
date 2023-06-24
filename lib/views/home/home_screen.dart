@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.music_note),
-              title: const Text('Ma playlists'),
+              title: const Text('Mes playlists'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/playlist');
