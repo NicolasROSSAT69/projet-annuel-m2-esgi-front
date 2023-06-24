@@ -27,6 +27,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     super.initState();
     final authService =
         Provider.of<AuthenticationService>(context, listen: false);
+    // Récupérer l'utilisateur courant
     currentUser = authService.currentUser;
 
     if (currentUser != null) {
@@ -41,12 +42,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         });
       }
     });
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
   }
 
   @override
@@ -88,31 +83,43 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           leading: Image.network(music.coverSmall),
                           title: Text(music.title),
                           subtitle: Text(music.artiste),
-                          trailing: IconButton(
-                            icon: ValueListenableBuilder<int>(
-                              valueListenable: playingIndex,
-                              builder: (context, currentIndex, child) {
-                                return Icon(
-                                  currentIndex == musicIndex &&
-                                          audioPlayer.state ==
-                                              PlayerState.playing
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                );
-                              },
-                            ),
-                            onPressed: () async {
-                              if (audioPlayer.state == PlayerState.playing &&
-                                  playingIndex.value == musicIndex) {
-                                await audioPlayer.pause();
-                                playingIndex.value = -1;
-                              } else {
-                                await audioPlayer
-                                    .play(UrlSource(music.preview));
-                                await audioPlayer.resume();
-                                playingIndex.value = musicIndex;
-                              }
-                            },
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ValueListenableBuilder<int>(
+                                valueListenable: playingIndex,
+                                builder: (context, currentIndex, child) {
+                                  return IconButton(
+                                    icon: Icon(
+                                      currentIndex == musicIndex &&
+                                              audioPlayer.state ==
+                                                  PlayerState.playing
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                    ),
+                                    onPressed: () async {
+                                      if (audioPlayer.state ==
+                                              PlayerState.playing &&
+                                          playingIndex.value == musicIndex) {
+                                        await audioPlayer.pause();
+                                        playingIndex.value = -1;
+                                      } else {
+                                        await audioPlayer
+                                            .play(UrlSource(music.preview));
+                                        await audioPlayer.resume();
+                                        playingIndex.value = musicIndex;
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  // Ajoutez votre logique pour supprimer la musique de la playlist ici
+                                },
+                              ),
+                            ],
                           ),
                         );
                       }).toList(),
