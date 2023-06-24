@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:my_app/config.dart';
 import 'package:my_app/services/playlist/playlist.dart';
 import 'package:my_app/models/playlist.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class PlaylistScreen extends StatefulWidget {
   final AppConfig config;
@@ -18,18 +19,34 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   Future<List<Playlist>>? _playlistsFuture;
   AppUser? currentUser;
 
+  final AudioPlayer audioPlayer = AudioPlayer();
+  ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
+
   @override
   void initState() {
     super.initState();
     final authService =
         Provider.of<AuthenticationService>(context, listen: false);
-    // Récupérer l'utilisateur courant
     currentUser = authService.currentUser;
 
     if (currentUser != null) {
       _playlistsFuture =
           PlaylistService(config: widget.config).getAllPlaylist(currentUser!);
     }
+
+    audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      if (state == PlayerState.completed) {
+        setState(() {
+          playingIndex.value = -1;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,14 +83,35 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       subtitle: Text(
                           'Nombre de musiques: ${playlist.musiques.length}'),
                       children: playlist.musiques.map((music) {
+                        int musicIndex = playlist.musiques.indexOf(music);
                         return ListTile(
                           leading: Image.network(music.coverSmall),
                           title: Text(music.title),
                           subtitle: Text(music.artiste),
                           trailing: IconButton(
-                            icon: const Icon(Icons.play_circle_filled),
-                            onPressed: () {
-                              // Vous pouvez ajouter ici la logique de lecture de la musique
+                            icon: ValueListenableBuilder<int>(
+                              valueListenable: playingIndex,
+                              builder: (context, currentIndex, child) {
+                                return Icon(
+                                  currentIndex == musicIndex &&
+                                          audioPlayer.state ==
+                                              PlayerState.playing
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                );
+                              },
+                            ),
+                            onPressed: () async {
+                              if (audioPlayer.state == PlayerState.playing &&
+                                  playingIndex.value == musicIndex) {
+                                await audioPlayer.pause();
+                                playingIndex.value = -1;
+                              } else {
+                                await audioPlayer
+                                    .play(UrlSource(music.preview));
+                                await audioPlayer.resume();
+                                playingIndex.value = musicIndex;
+                              }
                             },
                           ),
                         );
