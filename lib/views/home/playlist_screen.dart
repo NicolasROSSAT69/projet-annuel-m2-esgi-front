@@ -18,6 +18,7 @@ class PlaylistScreen extends StatefulWidget {
 class _PlaylistScreenState extends State<PlaylistScreen> {
   Future<List<Playlist>>? _playlistsFuture;
   AppUser? currentUser;
+  PlaylistService? playlistService;
 
   final AudioPlayer audioPlayer = AudioPlayer();
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
@@ -29,10 +30,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         Provider.of<AuthenticationService>(context, listen: false);
     // Récupérer l'utilisateur courant
     currentUser = authService.currentUser;
-
+    playlistService = PlaylistService(config: widget.config);
     if (currentUser != null) {
-      _playlistsFuture =
-          PlaylistService(config: widget.config).getAllPlaylist(currentUser!);
+      _playlistsFuture = playlistService!.getAllPlaylist(currentUser!);
     }
 
     audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
@@ -115,8 +115,16 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               ),
                               IconButton(
                                 icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  // Ajoutez votre logique pour supprimer la musique de la playlist ici
+                                onPressed: () async {
+                                  // Suppression de la musique de la playlist
+                                  await playlistService!
+                                      .removeMusicFromPlaylist(currentUser!.id,
+                                          playlist.id, music.id.toString());
+
+                                  // Suppression de la musique de la liste locale
+                                  setState(() {
+                                    playlist.musiques.removeAt(musicIndex);
+                                  });
                                 },
                               ),
                             ],

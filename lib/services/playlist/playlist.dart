@@ -67,7 +67,7 @@ class PlaylistService {
 
     final apiService = ApiService('${config.apiUrl}/playlist/musique/delete');
 
-    final response = await apiService.fetchDataWithParams(data);
+    final response = await apiService.postData(data);
 
     return response;
   }
