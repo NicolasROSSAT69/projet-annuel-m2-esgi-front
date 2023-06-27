@@ -137,6 +137,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               },
             )
           : const Center(child: Text('Aucun utilisateur connecté')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Votre logique pour ajouter une playlist
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blueGrey,
+      ),
     );
   }
 }
