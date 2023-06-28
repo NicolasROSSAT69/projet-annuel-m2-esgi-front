@@ -176,6 +176,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
                   // Rafraîchir la liste de playlists
                   refreshPlaylists();
+                  // nettoyage du champ
+                  _playlistController.text = '';
                 },
               ),
             ],
