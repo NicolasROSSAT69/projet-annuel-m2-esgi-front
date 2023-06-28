@@ -79,7 +79,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       subtitle: Text(
                           'Nombre de musiques: ${playlist.musiques.length}'),
                       trailing: Row(
-                        // <-- Modification ici
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           IconButton(
@@ -163,7 +162,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
-          // <-- Ajout de dialogContext
           return AlertDialog(
             title: const Text('Ajouter une nouvelle playlist'),
             content: TextFormField(
