@@ -71,4 +71,14 @@ class PlaylistService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> addPlaylist(String userId, String name) async {
+    var data = {'userId': userId, 'name': name};
+
+    final apiService = ApiService('${config.apiUrl}/playlist/add');
+
+    final response = await apiService.postData(data);
+
+    return response;
+  }
 }

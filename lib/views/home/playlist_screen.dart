@@ -19,6 +19,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   Future<List<Playlist>>? _playlistsFuture;
   AppUser? currentUser;
   PlaylistService? playlistService;
+  final TextEditingController _playlistController = TextEditingController();
 
   final AudioPlayer audioPlayer = AudioPlayer();
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
@@ -138,12 +139,53 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             )
           : const Center(child: Text('Aucun utilisateur connecté')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Votre logique pour ajouter une playlist
-        },
+        onPressed: () => _showAddPlaylistDialog(),
         child: Icon(Icons.add),
         backgroundColor: Colors.blueGrey,
       ),
     );
+  }
+
+  void _showAddPlaylistDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          // <-- Ajout de dialogContext
+          return AlertDialog(
+            title: const Text('Ajouter une nouvelle playlist'),
+            content: TextFormField(
+              controller: _playlistController,
+              decoration: const InputDecoration(hintText: "Nom de la playlist"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Annuler'),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Ajouter'),
+                onPressed: () async {
+                  // Votre logique pour ajouter la playlist
+                  String playlistName = _playlistController.text;
+                  Navigator.of(dialogContext).pop();
+                  // Ajout de la playlist
+                  await playlistService!
+                      .addPlaylist(currentUser!.id, playlistName);
+
+                  // Rafraîchir la liste de playlists
+                  refreshPlaylists();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void refreshPlaylists() {
+    setState(() {
+      _playlistsFuture = playlistService!.getAllPlaylist(currentUser!);
+    });
   }
 }
