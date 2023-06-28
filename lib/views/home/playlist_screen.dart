@@ -78,6 +78,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       title: Text(playlist.name),
                       subtitle: Text(
                           'Nombre de musiques: ${playlist.musiques.length}'),
+                      trailing: Row(
+                        // <-- Modification ici
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              // La logique pour supprimer la playlist
+                            },
+                          ),
+                          const Icon(Icons.arrow_drop_down),
+                        ],
+                      ),
                       children: playlist.musiques.map((music) {
                         int musicIndex = playlist.musiques.indexOf(music);
                         return ListTile(
