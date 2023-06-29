@@ -2,8 +2,6 @@ import 'package:my_app/models/user.dart';
 import 'package:my_app/services/api/api.dart';
 import 'package:my_app/config.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:my_app/config.dart';
 import 'package:my_app/models/playlist.dart';
 import 'package:my_app/models/music.dart';
 
