@@ -93,4 +93,15 @@ class PlaylistService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> addMusicToPlaylist(
+      String userId, String playlistId, String musicId) async {
+    var data = {'userId': userId, 'playlistId': playlistId, 'musicId': musicId};
+
+    final apiService = ApiService('${config.apiUrl}/playlist/musique/add');
+
+    final response = await apiService.postData(data);
+
+    return response;
+  }
 }

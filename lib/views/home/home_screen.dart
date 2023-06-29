@@ -318,9 +318,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     final playlist = snapshot.data![index];
                     return ListTile(
                       title: Text(playlist.name),
-                      onTap: () {
-                        // Lorsque la playlist est cliquée, son ID est affiché
-                        print('Playlist ID: ${playlist.id}');
+                      onTap: () async {
+                        // Appel de la méthode pour ajouter la musique à la playlist
+                        await playlistService!.addMusicToPlaylist(
+                            currentUser!.id, playlist.id, music.id.toString());
+
                         Navigator.of(context).pop(); // Ferme le dialogue
                       },
                     );
