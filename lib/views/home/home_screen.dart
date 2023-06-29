@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:my_app/models/user.dart';
 import 'package:my_app/services/authentication.dart';
 import 'package:provider/provider.dart';
-import 'package:my_app/views/home/playlist_screen.dart';
 import 'package:my_app/models/music.dart';
 import 'package:my_app/services/music/music.dart';
 import 'package:my_app/config.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:my_app/services/playlist/playlist.dart';
+import 'package:my_app/models/playlist.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppConfig config;
@@ -18,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AppUser? currentUser;
+
   final AudioPlayer audioPlayer = AudioPlayer();
 
   //Pour gérer l'état de lecture de la musique
@@ -25,9 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
 
+  PlaylistService? playlistService;
+
   @override
   void initState() {
     super.initState();
+    final authService =
+        Provider.of<AuthenticationService>(context, listen: false);
+    // Récupérer l'utilisateur courant
+    currentUser = authService.currentUser;
     audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       //if (state == PlayerState.stopped) {
       if (state == PlayerState.completed) {
@@ -36,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+    playlistService = PlaylistService(config: widget.config);
   }
 
   @override
@@ -264,9 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        // Ajouter votre logique pour le bouton d'ajout ici
-                                      },
+                                      onPressed: () =>
+                                          showPlaylistsDialog(context, music),
                                     ),
                                   ],
                                 ),
@@ -281,6 +290,45 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void showPlaylistsDialog(BuildContext context, Music music) {
+    // Affiche le dialogue
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Ajouter ${music.title} à la playlist'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: FutureBuilder<List<Playlist>>(
+            future: playlistService!.getAllPlaylist(currentUser!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Erreur : ${snapshot.error}');
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true, // Ajuste la hauteur à celle du contenu
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final playlist = snapshot.data![index];
+                    return ListTile(
+                      title: Text(playlist.name),
+                      onTap: () {
+                        // Lorsque la playlist est cliquée, son ID est affiché
+                        print('Playlist ID: ${playlist.id}');
+                        Navigator.of(context).pop(); // Ferme le dialogue
+                      },
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ),
       ),
     );
