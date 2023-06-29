@@ -81,4 +81,18 @@ class PlaylistService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> removePlaylist(
+      String userId, String playlistId) async {
+    var data = {
+      'userId': userId,
+      'playlistId': playlistId,
+    };
+
+    final apiService = ApiService('${config.apiUrl}/playlists/delete');
+
+    final response = await apiService.postData(data);
+
+    return response;
+  }
 }

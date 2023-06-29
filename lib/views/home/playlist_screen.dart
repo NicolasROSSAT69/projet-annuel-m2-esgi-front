@@ -83,8 +83,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         children: <Widget>[
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              // La logique pour supprimer la playlist
+                            onPressed: () async {
+                              // Suppression de la playlist
+                              await playlistService!
+                                  .removePlaylist(currentUser!.id, playlist.id);
+
+                              // // Suppression de la playlist de la liste locale
+                              setState(() {
+                                playlists.removeAt(index);
+                              });
                             },
                           ),
                           const Icon(Icons.arrow_drop_down),
@@ -178,7 +185,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               TextButton(
                 child: const Text('Ajouter'),
                 onPressed: () async {
-                  // Votre logique pour ajouter la playlist
+                  // La logique pour ajouter la playlist
                   String playlistName = _playlistController.text;
                   Navigator.of(dialogContext).pop();
                   // Ajout de la playlist
