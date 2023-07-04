@@ -9,6 +9,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:my_app/services/playlist/playlist.dart';
 import 'package:my_app/models/playlist.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppConfig config;
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Accueil'),
+        title: Text('Accueil'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -100,14 +101,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.home),
-              title: const Text('Accueil'),
+              title: Text('Accueil'.tr()),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.music_note),
-              title: const Text('Mes playlists'),
+              title: Text('Mes_playlists'.tr()),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/playlist');
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.tips_and_updates),
-              title: const Text('Mes suggestions'),
+              title: Text('Mes_suggestions'.tr()),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/suggestion');
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.history),
-              title: const Text('Mon historique'),
+              title: Text('Mon_historique'.tr()),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/historique');
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.policy),
-              title: const Text('Mentions légales'),
+              title: Text('Mentions_légales'.tr()),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/mentionslegales');
@@ -153,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Rechercher',
+                      labelText: 'Rechercher'.tr(),
                       prefixIcon: const Icon(Icons.search),
                       fillColor: Colors
                           .white, // Couleur de fond de la barre de recherche

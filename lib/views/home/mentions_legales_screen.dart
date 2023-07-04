@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/config.dart';
 import 'package:my_app/models/legal_mentions.dart';
 import 'package:my_app/services/legal_mentions/legal_mentions_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MentionsLegalescreen extends StatelessWidget {
   final AppConfig config;
@@ -15,7 +16,7 @@ class MentionsLegalescreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Mentions légales'),
+        title: Text('Mentions_légales'.tr()),
       ),
       body: Center(
         child: FutureBuilder<LegalMentions>(

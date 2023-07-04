@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:my_app/views/widgets/constances.dart';
 import 'package:my_app/views/widgets/loading.dart';
@@ -66,12 +67,27 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                   Navigator.pushNamed(context, '/mentionslegales');
                 },
               ),
-              title: Text(showSignin ? 'Connexion' : 'Inscription'),
+              title: Text(showSignin ? 'connexion'.tr() : 'inscription'.tr()),
               actions: <Widget>[
+                DropdownButton<Locale>(
+                  value: context.locale,
+                  onChanged: (Locale? newValue) {
+                    if (newValue != null) {
+                      context.setLocale(newValue);
+                    }
+                  },
+                  items: context.supportedLocales
+                      .map<DropdownMenuItem<Locale>>((Locale value) {
+                    return DropdownMenuItem<Locale>(
+                      value: value,
+                      child: Text(value.languageCode),
+                    );
+                  }).toList(),
+                ),
                 TextButton.icon(
                   icon: const Icon(Icons.person, color: Colors.white),
                   label: Text(
-                    showSignin ? 'Inscription' : 'Connexion',
+                    showSignin ? 'inscription'.tr() : 'connexion'.tr(),
                     style: const TextStyle(color: Colors.white),
                   ),
                   onPressed: () => toggleView(),
@@ -95,27 +111,29 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                           TextFormField(
                             controller: pseudoController,
                             decoration: textInputDecoration.copyWith(
-                                hintText: 'Pseudo'),
+                                hintText: 'pseudo'.tr()),
                             validator: (value) =>
-                                value!.isEmpty ? 'Entrez un pseudo' : null,
+                                value!.isEmpty ? 'Entrez un pseudo'.tr() : null,
                           ),
                           if (!showSignin) const SizedBox(height: 10.0),
                           if (!showSignin)
                             TextFormField(
                               controller: emailController,
                               decoration: textInputDecoration.copyWith(
-                                  hintText: 'Email'),
-                              validator: (value) =>
-                                  value!.isEmpty ? 'Entrez un email' : null,
+                                  hintText: 'email'.tr()),
+                              validator: (value) => value!.isEmpty
+                                  ? 'Entrez un email'.tr()
+                                  : null,
                             ),
                           const SizedBox(height: 10.0),
                           TextFormField(
                             controller: passwordController,
                             decoration: textInputDecoration.copyWith(
-                                hintText: 'Mot de passe'),
+                                hintText: 'mot_de_passe'.tr()),
                             obscureText: true,
                             validator: (value) => value!.length < 6
                                 ? 'Entrez un mot de passe de plus de 6 caractères'
+                                    .tr()
                                 : null,
                           ),
                           if (!showSignin) const SizedBox(height: 10.0),
@@ -123,13 +141,14 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                             TextFormField(
                               controller: confirmPasswordController,
                               decoration: textInputDecoration.copyWith(
-                                  hintText: 'Confirmer le mot de passe'),
+                                  hintText: 'confirmer_mot_de_passe'.tr()),
                               obscureText: true,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Confirmez votre mot de passe';
+                                  return 'Confirmez votre mot de passe'.tr();
                                 } else if (value != passwordController.text) {
-                                  return 'Les mots de passe ne correspondent pas';
+                                  return 'Les mots de passe ne correspondent pas'
+                                      .tr();
                                 }
                                 return null;
                               },
@@ -155,13 +174,16 @@ class _AuthentificateScreenState extends State<AuthentificateScreen> {
                                   setState(() {
                                     loading = false;
                                     error =
-                                        'Veuillez entrer un pseudo et un mot de passe valide';
+                                        'Veuillez entrer un pseudo et un mot de passe valide'
+                                            .tr();
                                   });
                                 }
                               }
                             },
                             child: Text(
-                              showSignin ? 'Connexion' : 'Inscription',
+                              showSignin
+                                  ? 'connexion'.tr()
+                                  : 'inscription'.tr(),
                               style: const TextStyle(color: Colors.white),
                             ),
                           ),

@@ -6,6 +6,7 @@ import 'package:my_app/config.dart';
 import 'package:my_app/services/music/music.dart';
 import 'package:my_app/models/music.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HistoriqueScreen extends StatefulWidget {
   final AppConfig config;
@@ -55,7 +56,7 @@ class _HistoriqueScreenState extends State<HistoriqueScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Mon historique'),
+        title: Text('Mon_historique'.tr()),
       ),
       body: currentUser != null
           ? FutureBuilder(

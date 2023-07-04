@@ -8,11 +8,23 @@ import 'package:my_app/views/home/playlist_screen.dart';
 import 'package:my_app/views/home/suggestion_screen.dart';
 import 'package:my_app/views/home/historique_screen.dart';
 import 'package:my_app/views/home/mentions_legales_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final config = await AppConfig.loadConfig();
-  runApp(MyApp(config: config));
+
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp(config: config),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +53,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         home: SplashScreenWrapper(config: config),
       ),
     );

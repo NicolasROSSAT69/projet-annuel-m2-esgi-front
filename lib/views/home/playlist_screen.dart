@@ -6,6 +6,7 @@ import 'package:my_app/config.dart';
 import 'package:my_app/services/playlist/playlist.dart';
 import 'package:my_app/models/playlist.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PlaylistScreen extends StatefulWidget {
   final AppConfig config;
@@ -50,7 +51,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Mes playlists'),
+        title: Text('Mes_playlists'.tr()),
       ),
       body: currentUser != null
           ? FutureBuilder<List<Playlist>>(
@@ -64,8 +65,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
                 // Check if snapshot.data is null
                 if (snapshot.data == null) {
-                  return const Center(
-                      child: Text('Aucune playlist disponible'));
+                  return Center(child: Text('Aucune_playlist_disponible'.tr()));
                 }
 
                 final playlists = snapshot.data!;
@@ -76,8 +76,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     final playlist = playlists[index];
                     return ExpansionTile(
                       title: Text(playlist.name),
-                      subtitle: Text(
-                          'Nombre de musiques: ${playlist.musiques.length}'),
+                      subtitle: Text('Nombre_de_musiques'.tr() +
+                          ':' +
+                          playlist.musiques.length.toString()),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -170,20 +171,20 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         context: context,
         builder: (BuildContext dialogContext) {
           return AlertDialog(
-            title: const Text('Ajouter une nouvelle playlist'),
+            title: Text('Ajouter_une_nouvelle_playlist'.tr()),
             content: TextFormField(
               controller: _playlistController,
-              decoration: const InputDecoration(hintText: "Nom de la playlist"),
+              decoration: InputDecoration(hintText: 'Nom_de_la_playlist'.tr()),
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Annuler'),
+                child: Text('Annuler'.tr()),
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                 },
               ),
               TextButton(
-                child: const Text('Ajouter'),
+                child: Text('Ajouter'.tr()),
                 onPressed: () async {
                   // La logique pour ajouter la playlist
                   String playlistName = _playlistController.text;

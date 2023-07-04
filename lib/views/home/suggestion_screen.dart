@@ -6,6 +6,7 @@ import 'package:my_app/config.dart';
 import 'package:my_app/services/music/music.dart';
 import 'package:my_app/models/music.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SuggestionScreen extends StatefulWidget {
   final AppConfig config;
@@ -55,7 +56,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text('Mes suggestions du moment'),
+        title: Text('Mes_suggestions_du_moment'.tr()),
       ),
       body: currentUser != null
           ? FutureBuilder(
