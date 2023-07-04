@@ -3,6 +3,7 @@ import 'package:my_app/config.dart';
 import 'package:my_app/models/legal_mentions.dart';
 import 'package:my_app/services/legal_mentions/legal_mentions_service.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:my_app/views/splashscreen_wrapper.dart';
 
 class MentionsLegalescreen extends StatelessWidget {
   final AppConfig config;
@@ -15,6 +16,13 @@ class MentionsLegalescreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => {
+            Navigator.pop(context),
+            Navigator.pushNamed(context, '/'),
+          },
+        ),
         backgroundColor: Colors.blueGrey,
         title: Text('Mentions_légales'.tr()),
       ),
