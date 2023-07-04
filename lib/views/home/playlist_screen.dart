@@ -7,6 +7,7 @@ import 'package:my_app/services/playlist/playlist.dart';
 import 'package:my_app/models/playlist.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:my_app/views/widgets/dropdown.dart';
 
 class PlaylistScreen extends StatefulWidget {
   final AppConfig config;
@@ -21,6 +22,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   AppUser? currentUser;
   PlaylistService? playlistService;
   final TextEditingController _playlistController = TextEditingController();
+  final TextEditingController _playlistControllerName = TextEditingController();
+  final TextEditingController _playlistControllerNumber =
+      TextEditingController();
+
+  List<String> items = ["Rock", "Pop", "Hip-hop", "Rap", "R&B"];
+
+  String? selectedItem = 'Rock';
+
+  final dropdownKey = GlobalKey<DropdownButtonWidgetState>();
 
   final AudioPlayer audioPlayer = AudioPlayer();
   ValueNotifier<int> playingIndex = ValueNotifier<int>(-1);
@@ -103,7 +113,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         return ListTile(
                           leading: Image.network(music.coverSmall),
                           title: Text(music.title),
-                          subtitle: Text(music.artiste),
+                          subtitle: Text("Titre : " +
+                              music.artiste +
+                              " Genre : " +
+                              music.genreMusical),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
@@ -159,7 +172,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             )
           : const Center(child: Text('Aucun utilisateur connecté')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddPlaylistDialog(),
+        onPressed: () => _showInfoPlaylistDialog(),
         child: Icon(Icons.add),
         backgroundColor: Colors.blueGrey,
       ),
@@ -197,6 +210,103 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   refreshPlaylists();
                   // nettoyage du champ
                   _playlistController.text = '';
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showInfoPlaylistDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: Text('Creer_une_playlist'.tr()),
+            content: Column(
+              mainAxisSize: MainAxisSize
+                  .min, // Utilisez cette ligne pour éviter les problèmes de débordement
+              children: <Widget>[
+                ListTile(
+                  title: Text('Playlist_personnalisee'.tr()),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    _showAddPlaylistDialog(); // Ferme le dialogue
+                  },
+                ),
+                ListTile(
+                  title: Text('Playlist_aleatoire_par_genre'.tr()),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    _showAddPlaylistAleaDialog(); // Ferme le dialogue
+                  },
+                )
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Annuler'.tr()),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showAddPlaylistAleaDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: Text('Creer_une_playlist_aleatoire'.tr()),
+            content: Column(
+              mainAxisSize: MainAxisSize
+                  .min, // Utilisez cette ligne pour éviter les problèmes de débordement
+              children: <Widget>[
+                TextFormField(
+                  controller: _playlistControllerName,
+                  decoration:
+                      InputDecoration(hintText: 'Nom_de_la_playlist'.tr()),
+                ),
+                TextFormField(
+                  controller: _playlistControllerNumber,
+                  decoration: InputDecoration(
+                      hintText: 'Nombre_de_musique_souhaite'.tr()),
+                ),
+                DropdownButtonWidget(
+                  key: dropdownKey,
+                  items: items,
+                )
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Annuler'.tr()),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Ajouter'.tr()),
+                onPressed: () async {
+                  String playlistName = _playlistControllerName.text;
+                  String playlistNumber = _playlistControllerNumber.text;
+                  String selectedGenre =
+                      dropdownKey.currentState?.getSelectedItem() ?? 'Rock';
+
+                  await playlistService!.addPlaylistAleatoireByGenre(
+                      currentUser!.id,
+                      playlistName,
+                      playlistNumber,
+                      selectedGenre);
+                  Navigator.of(dialogContext).pop();
+                  _playlistControllerName.text = '';
+                  _playlistControllerNumber.text = '';
+
+                  // Rafraîchir la liste de playlists
+                  refreshPlaylists();
                 },
               ),
             ],

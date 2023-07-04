@@ -104,4 +104,20 @@ class PlaylistService {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> addPlaylistAleatoireByGenre(
+      String userId, String name, String numberOfMusics, String genre) async {
+    var data = {
+      'userId': userId,
+      'name': name,
+      'numberOfMusics': numberOfMusics,
+      'genre': genre
+    };
+
+    final apiService = ApiService('${config.apiUrl}/playlist/add/random/genre');
+
+    final response = await apiService.postData(data);
+
+    return response;
+  }
 }

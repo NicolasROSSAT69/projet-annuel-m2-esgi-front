@@ -23,5 +23,10 @@
     "Nom_de_la_playlist": "Playlist name",
     "Annuler": "Cancel",
     "Ajouter": "Add",
-    "Mes_suggestions_du_moment": "My current suggestions"
+    "Mes_suggestions_du_moment": "My current suggestions",
+    "Creer_une_playlist": "Create a playlist",
+    "Playlist_personnalisee": "Custom Playlist",
+    "Playlist_aleatoire_par_genre": "Random playlist by genre",
+    "Creer_une_playlist_aleatoire": "Create a random playlist by genre",
+    "Nombre_de_musique_souhaite": "Desired number of music"
 }
